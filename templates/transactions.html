@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Issue / Return</h1>
+<div class="card">
+  <h3>Issue a book</h3>
+  <form method="post" action="{{ url_for('issue') }}" class="row">
+    <select name="member_id" required>
+      {% for m in members %}<option value="{{ m.member_id }}">{{ m.member_id }} - {{ m.name }}</option>{% endfor %}
+    </select>
+    <select name="book_id" required>
+      {% for b in books %}<option value="{{ b.book_id }}">{{ b.title }} ({{ b.copies_available }} left)</option>{% endfor %}
+    </select>
+    <button>Issue</button>
+  </form>
+</div>
+<table>
+  <tr><th>Txn</th><th>Member</th><th>Book</th><th>Issued</th><th>Due</th><th>Returned</th><th>Fine</th><th></th></tr>
+  {% for t in txns %}
+  <tr>
+    <td>{{ t.txn_id }}</td>
+    <td>{{ names.get(t.member_id, t.member_id) }}</td>
+    <td>{{ titles.get(t.book_id, t.book_id) }}</td>
+    <td>{{ t.issue_date }}</td>
+    <td>{{ t.due_date }}{% if not t.return_date and t.due_date < today %} <span class="tag" style="background:#fee2e2;color:#991b1b">overdue</span>{% endif %}</td>
+    <td>{{ t.return_date or "-" }}</td>
+    <td>Rs {{ t.fine }}</td>
+    <td>
+      {% if not t.return_date %}
+      <form class="inline" method="post" action="{{ url_for('return_book', txn_id=t.txn_id) }}">
+        <button class="green">Return</button>
+      </form>
+      {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

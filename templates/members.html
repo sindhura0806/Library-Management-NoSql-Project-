@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Members</h1>
+<div class="card">
+  <h3>Add a member</h3>
+  <form method="post" class="row">
+    <input name="name" placeholder="Name" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <input name="branch" placeholder="Branch (CSE, ECE...)" required>
+    <button>Add</button>
+  </form>
+</div>
+<table>
+  <tr><th>ID</th><th>Name / Branch (editable)</th><th>Email</th><th>Actions</th></tr>
+  {% for m in members %}
+  <tr>
+    <td>{{ m.member_id }}</td>
+    <td>
+      <form class="inline row" method="post" action="{{ url_for('update_member', member_id=m.member_id) }}">
+        <input name="name" value="{{ m.name }}">
+        <input name="branch" value="{{ m.branch }}" size="8">
+        <button class="green">Update</button>
+      </form>
+    </td>
+    <td>{{ m.email }}</td>
+    <td>
+      <form class="inline" method="post" action="{{ url_for('delete_member', member_id=m.member_id) }}"
+            onsubmit="return confirm('Delete this member?')">
+        <button class="danger">Delete</button>
+      </form>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

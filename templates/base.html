@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Library NoSQL System</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<nav>
+  <span class="brand">Library (MongoDB + Neo4j)</span>
+  <a href="{{ url_for('index') }}">Dashboard</a>
+  <a href="{{ url_for('books_page') }}">Books</a>
+  <a href="{{ url_for('members_page') }}">Members</a>
+  <a href="{{ url_for('transactions_page') }}">Issue / Return</a>
+  <a href="{{ url_for('recommend') }}">Recommendations</a>
+  <a href="{{ url_for('reports') }}">Reports</a>
+</nav>
+<main>
+  {% with msgs = get_flashed_messages(with_categories=true) %}
+    {% for cat, msg in msgs %}<div class="flash {{ cat }}">{{ msg }}</div>{% endfor %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</main>
+</body>
+</html>

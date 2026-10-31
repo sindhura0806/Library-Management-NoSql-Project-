@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Books</h1>
+<div class="card">
+  <h3>Add a book</h3>
+  <form method="post" class="row">
+    <input name="title" placeholder="Title" required>
+    <input name="authors" placeholder="Authors (comma separated)" required>
+    <input name="genre" placeholder="Genre" required>
+    <input name="isbn" placeholder="ISBN">
+    <input type="number" name="copies" value="1" min="0" required>
+    <button>Add</button>
+  </form>
+</div>
+<div class="card">
+  <form method="get" class="row">
+    <input name="q" value="{{ q }}" placeholder="Search title, author or genre">
+    <button>Search</button>
+    {% if q %}<a href="{{ url_for('books_page') }}">clear</a>{% endif %}
+  </form>
+</div>
+<table>
+  <tr><th>ID</th><th>Title / Copies (editable)</th><th>Authors</th><th>Genre</th><th>Actions</th></tr>
+  {% for b in books %}
+  <tr>
+    <td>{{ b.book_id }}</td>
+    <td>
+      <form class="inline row" method="post" action="{{ url_for('update_book', book_id=b.book_id) }}">
+        <input name="title" value="{{ b.title }}" size="32">
+        <input type="number" name="copies" value="{{ b.copies_available }}" min="0">
+        <button class="green">Update</button>
+      </form>
+    </td>
+    <td>{{ b.authors | join(", ") }}</td>
+    <td><span class="tag">{{ b.genre }}</span></td>
+    <td>
+      <form class="inline" method="post" action="{{ url_for('delete_book', book_id=b.book_id) }}"
+            onsubmit="return confirm('Delete this book?')">
+        <button class="danger">Delete</button>
+      </form>
+    </td>
+  </tr>
+  {% else %}
+  <tr><td colspan="5" class="muted">No books found.</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}

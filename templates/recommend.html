@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% macro book_table(rows, score_label) %}
+  <table>
+    <tr><th>Title</th><th>Authors</th><th>Genre</th>{% if score_label %}<th>{{ score_label }}</th>{% endif %}</tr>
+    {% for b in rows %}
+    <tr><td>{{ b.title }}</td><td>{{ b.authors | join(", ") }}</td>
+        <td><span class="tag">{{ b.genre }}</span></td>
+        {% if score_label %}<td>{{ b.score }}</td>{% endif %}</tr>
+    {% else %}<tr><td colspan="4" class="muted">Nothing to show.</td></tr>
+    {% endfor %}
+  </table>
+{% endmacro %}
+{% block content %}
+<h1>Book Recommendations (Neo4j)</h1>
+<div class="card">
+  <form method="get" class="row">
+    <select name="member_id" required>
+      <option value="">Choose a member</option>
+      {% for m in members %}
+      <option value="{{ m.member_id }}" {% if m.member_id == member_id %}selected{% endif %}>{{ m.member_id }} - {{ m.name }}</option>
+      {% endfor %}
+    </select>
+    <button>Recommend</button>
+  </form>
+</div>
+{% if member %}
+<div class="card"><h3>Already borrowed by {{ member.name }}</h3>{{ book_table(history, "") }}</div>
+<div class="grid2">
+  <div class="card">
+    <h3>Readers like you also borrowed</h3>
+    <p class="muted">Collaborative filtering. Score = number of similar readers.</p>
+    {{ book_table(collab, "Score") }}
+  </div>
+  <div class="card">
+    <h3>Same genre / author</h3>
+    <p class="muted">Content based. Score = number of shared genres/authors.</p>
+    {{ book_table(content, "Score") }}
+  </div>
+</div>
+{% endif %}
+{% endblock %}

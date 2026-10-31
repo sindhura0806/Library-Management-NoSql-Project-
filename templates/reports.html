@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Reports and Query Demo</h1>
+<div class="grid2">
+  <div class="card">
+    <h3>MongoDB: most borrowed books (aggregation)</h3>
+    <table><tr><th>Title</th><th>Times borrowed</th></tr>
+      {% for r in top_books %}<tr><td>{{ r.title }}</td><td>{{ r.count }}</td></tr>{% endfor %}
+    </table>
+  </div>
+  <div class="card">
+    <h3>MongoDB: overdue books (find)</h3>
+    <table><tr><th>Txn</th><th>Member</th><th>Book</th><th>Due</th></tr>
+      {% for t in overdue %}<tr><td>{{ t.txn_id }}</td><td>{{ t.member_id }}</td><td>{{ t.book_id }}</td><td>{{ t.due_date }}</td></tr>
+      {% else %}<tr><td colspan="4" class="muted">No overdue books.</td></tr>{% endfor %}
+    </table>
+  </div>
+  <div class="card">
+    <h3>Neo4j: genre popularity (graph traversal)</h3>
+    <table><tr><th>Genre</th><th>Borrows</th></tr>
+      {% for r in genres %}<tr><td>{{ r.genre }}</td><td>{{ r.borrows }}</td></tr>{% endfor %}
+    </table>
+  </div>
+  <div class="card">
+    <h3>Neo4j: members with similar taste</h3>
+    <table><tr><th>Member 1</th><th>Member 2</th><th>Common books</th></tr>
+      {% for r in similar %}<tr><td>{{ r.member1 }}</td><td>{{ r.member2 }}</td><td>{{ r.common }}</td></tr>{% endfor %}
+    </table>
+  </div>
+</div>
+{% endblock %}

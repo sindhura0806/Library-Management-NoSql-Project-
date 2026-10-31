@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Dashboard</h1>
+<div class="stats">
+  <div class="stat"><b>{{ stats.books }}</b>Books (MongoDB)</div>
+  <div class="stat"><b>{{ stats.members }}</b>Members (MongoDB)</div>
+  <div class="stat"><b>{{ stats.issued }}</b>Currently issued (MongoDB)</div>
+  <div class="stat"><b>{{ stats.edges }}</b>BORROWED links (Neo4j)</div>
+</div>
+<div class="card" style="margin-top:20px">
+  <h3>How the two databases work together</h3>
+  <p><b>MongoDB</b> stores books, members and transactions (flexible documents, fast CRUD).</p>
+  <p><b>Neo4j</b> stores the graph of members, books, authors and genres, and powers the recommendations.</p>
+  <p class="muted">Every add / issue / delete writes to both databases so they stay in sync.</p>
+</div>
+{% endblock %}

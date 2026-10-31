@@ -24,7 +24,7 @@ NEO4J_PASSWORD, e.g. `set NEO4J_PASSWORD=yourpass` on Windows.)
     db.transactions.find({return_date:null})
     db.transactions.aggregate([{$group:{_id:"$book_id", count:{$sum:1}}},{$sort:{count:-1}}])
 
-### Neo4j (browser at http://localhost:7474)
+### Neo4j 
     CREATE (b:Book {book_id:"B100", title:"Test Book"})
     MATCH (m:Member {member_id:"M001"})-[:BORROWED]->(b:Book) RETURN m, b
     MATCH (b:Book {book_id:"B100"}) SET b.title = "Updated Title"
